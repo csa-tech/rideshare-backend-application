@@ -36,9 +36,9 @@ function accept_ride (req, res, next) {
       if (err) {throw err;}
       ride_status = rows[0].status;
       console.log("Original status: " + ride_status);
-      ride_status += 1;
+      ride_status = "accepted";
       console.log("Updated status: " + ride_status);
-      connection.query(`UPDATE myDataBase.pending_ride SET status = ` + ride_status + ` WHERE user_ID = '${string}';`, function(err, rows, fields) {
+      connection.query(`UPDATE myDataBase.pending_ride SET status = '` + ride_status + `' WHERE user_ID = '${string}';`, function(err, rows, fields) {
         if(err){throw err;}
         res.status(200).send('Success. New Status: ' + ride_status);
     });
@@ -57,9 +57,9 @@ function deny_ride (req, res, next) {
       if (err) {throw err;}
       ride_status = rows[0].status;
       console.log("Original status: " + ride_status);
-      ride_status -= 1;
+      ride_status = "denied";
       console.log("Updated status: " + ride_status);
-      connection.query(`UPDATE myDataBase.pending_ride SET status = ` + ride_status + ` WHERE user_ID = '${string}';`, function(err, rows, fields) {
+      connection.query(`UPDATE myDataBase.pending_ride SET status = '` + ride_status + `' WHERE user_ID = '${string}';`, function(err, rows, fields) {
         if(err){throw err;}
         res.status(200).send('Success. New Status: ' + ride_status);
     });
