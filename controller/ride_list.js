@@ -17,7 +17,7 @@ connection.connect(function(err) {
 function view_ride (req, res, next) {
   try{
     var input = req.query;
-    connection.query(`SELECT * FROM myDataBase.pending_ride WHERE user_ID = '${input.user_ID}';`, function(err, rows, fields) {
+    connection.query(`SELECT * FROM myDataBase.pending_ride;`, function(err, rows, fields) {
       if (err) {throw err;}
 
       res.status(200).send(rows);
