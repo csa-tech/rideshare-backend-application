@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var ride_listRouter = require('./routes/ride_list');
 var accept_router = require('./routes/ride_acceptted');
 var deny_router = require('./routes/ride_deny');
+var push_router = require('./routes/pushing');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use('/users', usersRouter);
 app.use('/ride_list', ride_listRouter);
 app.use('/ride_acceptted', accept_router);
 app.use('/ride_deny', deny_router);
+app.use('/pushing', push_router);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
