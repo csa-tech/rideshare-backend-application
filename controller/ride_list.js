@@ -35,6 +35,21 @@ function view_ride (req, res, next) {
   }
 }
 
+
+function view_pending (req, res, next) {
+  try{
+    var input = req.query;
+    connection.query(`SELECT * FROM myDataBase.pending_ride WHERE status = '` + input.status + `' && numPeople = '` + input.numPeople + `';`, function(err, rows, fields) {
+      if (err) {throw err;}
+      res.status(200).send(rows);
+    });
+  } catch(err) {
+    res.status(500).send('Server Error:' + err);
+    connection.end();
+  }
+}
+
+
 function accept_ride (req, res, next) {
   try{
     var input = req.query;
@@ -97,4 +112,4 @@ catch(err) {
 //     connection.end();
   }
 }
-module.exports = {view_ride, accept_ride, deny_ride, push_info}
+module.exports = {view_ride, accept_ride, deny_ride, push_info, view_pending}
