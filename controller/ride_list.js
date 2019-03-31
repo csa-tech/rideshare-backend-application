@@ -81,17 +81,20 @@ function deny_ride (req, res, next) {
 function push_info (req, res, next) {
   try{
     var input = req.query;
-    var string = input.user_ID;
-    connection.query(`INSERT INTO myDataBase.pending_ride SET user_ID = '` + input.user_ID + `', numPeople = '` + req.query.numPeople + `';`, function(err, rows, fields) {
+    var string = 'pending';
+    connection.query(`INSERT INTO myDataBase.pending_ride SET user_ID = '` + input.user_ID + `', status = '${string}', numPeople = '` + input.numPeople + `';`, function(err, rows, fields) {
   });
       if (err) {throw err;}
+      console.log("insertion successed");
+      res.status(200).send('ride submitted');
   //   connection.query(`UPDATE myDataBase.pending_ride SET status = 'pending', numPeople = '` + req.query.numPeople + `' WHERE user_ID = '` + input.user_ID + `';`, function(err, rows, fields) {
   //     if (err) {throw err;}
   //       res.status(200).send('Insert successed');
   // });
-} catch(err) {
-    res.status(500).send('Server Error:' + err);
-    connection.end();
+}
+catch(err) {
+    res.status(500).send('Server Error: ' + err);
+//     connection.end();
   }
 }
 module.exports = {view_ride, accept_ride, deny_ride, push_info}
