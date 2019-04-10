@@ -4,7 +4,7 @@ var connection = mysql.createConnection({
   user     : 'CSAUser',
   password : 'Csa666!!',
   port     : '3306',
-  database : 'myDataBase'
+  database : 'rideshare'
 });
 connection.connect(function(err) {
   if (err) {
@@ -18,13 +18,13 @@ function view_ride (req, res, next) {
   try{
     var input = req.query;
     if (req.query.user_ID === "all"){
-      connection.query(`SELECT * FROM myDataBase.pending_ride;`, function(err, rows, fields) {
+      connection.query(`SELECT * FROM user_info;`, function(err, rows, fields) {
         if (err) {throw err;}
         res.status(200).send(rows);
       });
     }
     else{
-      connection.query(`SELECT * FROM myDataBase.pending_ride WHERE user_ID = '${input.user_ID}';`, function(err, rows, fields) {
+      connection.query(`SELECT * FROM user_info WHERE user_id = '${input.user_ID}';`, function(err, rows, fields) {
         if (err) {throw err;}
         res.status(200).send(rows);
       });
@@ -39,7 +39,7 @@ function view_ride (req, res, next) {
 function view_pending (req, res, next) {
   try{
     var input = req.query;
-    connection.query(`SELECT * FROM myDataBase.pending_ride WHERE status = '` + input.status + `' && numPeople = '` + input.numPeople + `';`, function(err, rows, fields) {
+    connection.query(`SELECT * FROM ride_info WHERE departure = '` + input.departure + `' AND destination = '` + input.destination + `';`, function(err, rows, fields) {
       if (err) {throw err;}
       res.status(200).send(rows);
     });
@@ -53,14 +53,14 @@ function view_pending (req, res, next) {
 function accept_ride (req, res, next) {
   try{
     var input = req.query;
-    var string = input.user_ID;
-    connection.query(`SELECT status FROM myDataBase.pending_ride WHERE user_ID = '${string}';`, function(err, rows, fields) {
+    var string = input.ride_id;
+    connection.query(`SELECT status FROM ride_info WHERE ride_id = '${string}';`, function(err, rows, fields) {
       if (err) {throw err;}
       ride_status = rows[0].status;
       console.log("Original status: " + ride_status);
       ride_status = "accepted";
       console.log("Updated status: " + ride_status);
-      connection.query(`UPDATE myDataBase.pending_ride SET status = '` + ride_status + `' WHERE user_ID = '${string}';`, function(err, rows, fields) {
+      connection.query(`UPDATE ride_info SET status = '` + ride_status + `' WHERE ride_id = '${string}';`, function(err, rows, fields) {
         if(err){throw err;}
         res.status(200).send('Success. New Status: ' + ride_status);
     });
@@ -74,14 +74,14 @@ function accept_ride (req, res, next) {
 function deny_ride (req, res, next) {
   try{
     var input = req.query;
-    var string = input.user_ID;
-    connection.query(`SELECT status FROM myDataBase.pending_ride WHERE user_ID = '${string}';`, function(err, rows, fields) {
+    var string = input.ride_id;
+    connection.query(`SELECT status FROM ride_info WHERE ride_id = '${string}';`, function(err, rows, fields) {
       if (err) {throw err;}
       ride_status = rows[0].status;
       // console.log("Original status: " + ride_status);
       ride_status = "denied";
       // console.log("Updated status: " + ride_status);
-      connection.query(`UPDATE myDataBase.pending_ride SET status = '` + ride_status + `' WHERE user_ID = '${string}';`, function(err, rows, fields) {
+      connection.query(`UPDATE ride_info SET status = '` + ride_status + `' WHERE ride_id = '${string}';`, function(err, rows, fields) {
         if(err){throw err;}
         res.status(200).send('Success. New Status: ' + ride_status);
     });
@@ -96,10 +96,12 @@ function deny_ride (req, res, next) {
 function push_info (req, res, next) {
   try{
     var input = req.query;
-    var string = 'pending';
-    connection.query(`INSERT INTO myDataBase.pending_ride SET user_ID = '` + input.user_ID + `', status = '${string}', numPeople = '` + input.numPeople + `';`, function(err, rows, fields) {
+    // console.log(`INSERT INTO ride_info SET ride_id = ` + input.ride_id + `;`)
+    connection.query(`INSERT INTO ride_info SET ride_id = ` + input.ride_id + `, people_num = '` + input.people_num +`', wechat_id = '` + input.wechat_id + `', note = '` + input.note + `', status = '` + input.status + `', departure = '` + input.departure + `', destination = '` + input.destination + `', approved_people = '` + input.approved_people + `';`, function(err, rows, fields) {
+      if (err) {console.log(err);}
+
   });
-      if (err) {throw err;}
+      // if (err) {throw err;}
       console.log("insertion successed");
       res.status(200).send('ride submitted');
   //   connection.query(`UPDATE myDataBase.pending_ride SET status = 'pending', numPeople = '` + req.query.numPeople + `' WHERE user_ID = '` + input.user_ID + `';`, function(err, rows, fields) {
