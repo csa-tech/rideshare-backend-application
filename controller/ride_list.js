@@ -39,7 +39,7 @@ function view_ride (req, res, next) {
 function view_pending (req, res, next) {
   try{
     var input = req.query;
-    connection.query(`SELECT * FROM user_info WHERE user_id = '${input.user_id}';`, function(err, rows, fields) {
+    connection.query(`SELECT * FROM ride_info WHERE user_id = '${input.user_id}';`, function(err, rows, fields) {
       if (err) {throw err;}
       res.status(200).send(rows);
     });
