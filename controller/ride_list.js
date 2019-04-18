@@ -97,7 +97,7 @@ function push_info (req, res, next) {
   try{
     let number = 0;
     var input = req.query;
-      connection.query(`SELECT COUNT(*) AS num FROM rideshare.ride_info WHERE ride_id > 0;`, function(err, rows, fields) {
+      connection.query(`SELECT COUNT(*) AS num FROM rideshare.ride_info;`, function(err, rows, fields) {
         if (err) {throw err;}
         number = rows[0].num;
         number += 1;
@@ -105,7 +105,7 @@ function push_info (req, res, next) {
         connection.query(`INSERT INTO ride_info SET ride_id = ` + number + `, people_num = ` + input.people_num +`, wechat_id = ` + input.wechat_id + `, note = '` + input.note + `', status = '` + input.status + `', departure = '` + input.departure + `', destination = '` + input.destination + `', num_passenger = ` + input.approved_people + `, date = '` + input.date + `', time = '` + input.time + `', price = ` + input.price + `;`, function(err, rows, fields) {
           if (err) {console.log(err);}
 
-      });
+        });
       });
     // console.log(`INSERT INTO ride_info SET ride_id = ` + input.ride_id + `;`)
 
