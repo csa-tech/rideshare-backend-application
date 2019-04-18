@@ -97,7 +97,7 @@ function push_info (req, res, next) {
   try{
     var input = req.query;
     // console.log(`INSERT INTO ride_info SET ride_id = ` + input.ride_id + `;`)
-    connection.query(`INSERT INTO ride_info SET ride_id = ` + input.ride_id + `, people_num = ` + input.people_num +`, wechat_id = ` + input.wechat_id + `, note = '` + input.note + `', status = '` + input.status + `', departure = '` + input.departure + `', destination = '` + input.destination + `', approved_people = ` + input.approved_people + `;`, function(err, rows, fields) {
+    connection.query(`INSERT INTO ride_info SET ride_id = ` + input.ride_id + `, people_num = ` + input.people_num +`, wechat_id = ` + input.wechat_id + `, note = '` + input.note + `', status = '` + input.status + `', departure = '` + input.departure + `', destination = '` + input.destination + `', num_passenger = ` + input.approved_people + `, date = '` + input.date + `', time = '` + input.time + `', price = ` + input.price + `;`, function(err, rows, fields) {
       if (err) {console.log(err);}
 
   });
