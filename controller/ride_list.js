@@ -18,13 +18,13 @@ function view_ride (req, res, next) {
   try{
     var input = req.query;
     if (req.query.user_ID === "all"){
-      connection.query(`SELECT * FROM user_info;`, function(err, rows, fields) {
+      connection.query(`SELECT * FROM ride_info;`, function(err, rows, fields) {
         if (err) {throw err;}
         res.status(200).send(rows);
       });
     }
     else{
-      connection.query(`SELECT * FROM user_info WHERE user_id = '${input.user_ID}';`, function(err, rows, fields) {
+      connection.query(`SELECT * FROM user_info WHERE ride_id = '${input.user_ID}';`, function(err, rows, fields) {
         if (err) {throw err;}
         res.status(200).send(rows);
       });
