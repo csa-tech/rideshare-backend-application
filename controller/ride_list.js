@@ -24,7 +24,7 @@ function view_ride (req, res, next) {
       });
     }
     else{
-      connection.query(`SELECT * FROM user_info WHERE ride_id = '${input.user_ID}';`, function(err, rows, fields) {
+      connection.query(`SELECT * FROM ride_info WHERE ride_id = '${input.user_ID}';`, function(err, rows, fields) {
         if (err) {throw err;}
         res.status(200).send(rows);
       });
