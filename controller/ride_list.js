@@ -53,7 +53,7 @@ function view_pending (req, res, next) {
 function accept_ride (req, res, next) {
   try{
     var input = req.query;
-    var string = input.ride_id;
+    var string = input.user_id;
     connection.query(`SELECT status FROM ride_info WHERE ride_id = '${string}';`, function(err, rows, fields) {
       if (err) {throw err;}
       ride_status = rows[0].status;
@@ -74,7 +74,7 @@ function accept_ride (req, res, next) {
 function deny_ride (req, res, next) {
   try{
     var input = req.query;
-    var string = input.ride_id;
+    var string = input.user_id;
     connection.query(`SELECT status FROM ride_info WHERE ride_id = '${string}';`, function(err, rows, fields) {
       if (err) {throw err;}
       ride_status = rows[0].status;
