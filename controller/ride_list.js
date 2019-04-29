@@ -18,13 +18,13 @@ function view_ride (req, res, next) {
   try{
     var input = req.query;
     if (req.query.user_ID === "all"){
-      connection.query(`SELECT * FROM ride_info;`, function(err, rows, fields) {
+      connection.query(`SELECT * FROM application INNER JOIN ride ON application.ride_id=ride.ride_id;`, function(err, rows, fields) {
         if (err) {throw err;}
         res.status(200).send(rows);
       });
     }
     else{
-      connection.query(`SELECT * FROM ride_info WHERE ride_id = '${input.user_ID}';`, function(err, rows, fields) {
+      connection.query(`SELECT * FROM application INNER JOIN ride ON application.ride_id=ride.ride_id WHERE application.ride_id = '${input.user_ID}';`, function(err, rows, fields) {
         if (err) {throw err;}
         res.status(200).send(rows);
       });
@@ -39,7 +39,7 @@ function view_ride (req, res, next) {
 function view_pending (req, res, next) {
   try{
     var input = req.query;
-    connection.query(`SELECT * FROM ride_info WHERE wechat_id = '${input.wechat_id}';`, function(err, rows, fields) {
+    connection.query(`SELECT * FROM ride WHERE wechat_id = '${input.wechat_id}';`, function(err, rows, fields) {
       if (err) {throw err;}
       res.status(200).send(rows);
     });
@@ -54,17 +54,10 @@ function accept_ride (req, res, next) {
   try{
     var input = req.query;
     var string = input.user_id;
-    connection.query(`SELECT status FROM ride_info WHERE ride_id = '${string}';`, function(err, rows, fields) {
-      if (err) {throw err;}
-      ride_status = rows[0].status;
-      console.log("Original status: " + ride_status);
-      ride_status = "accepted";
-      console.log("Updated status: " + ride_status);
-      connection.query(`UPDATE ride_info SET status = '` + ride_status + `' WHERE ride_id = '${string}';`, function(err, rows, fields) {
-        if(err){throw err;}
-        res.status(200).send('Success. New Status: ' + ride_status);
+    connection.query(`UPDATE application INNER JOIN ride ON application.ride_id=ride.ride_id SET application.status='accepted', ride.status='accepted' WHERE application.application_id = '${string}';`, function(err, rows, fields) {
+      if(err){throw err;}
+      res.status(200).send('Success. New Status: accepted');
     });
-  });
 } catch(err) {
     res.status(500).send('Server Error:' + err);
     connection.end();
@@ -75,44 +68,37 @@ function deny_ride (req, res, next) {
   try{
     var input = req.query;
     var string = input.user_id;
-    connection.query(`SELECT status FROM ride_info WHERE ride_id = '${string}';`, function(err, rows, fields) {
-      if (err) {throw err;}
-      ride_status = rows[0].status;
-      // console.log("Original status: " + ride_status);
-      ride_status = "denied";
-      // console.log("Updated status: " + ride_status);
-      connection.query(`UPDATE ride_info SET status = '` + ride_status + `' WHERE ride_id = '${string}';`, function(err, rows, fields) {
-        if(err){throw err;}
-        res.status(200).send('Success. New Status: ' + ride_status);
+    connection.query(`UPDATE application INNER JOIN ride ON application.ride_id=ride.ride_id SET application.status='denied', ride.status='denied' WHERE application.application_id = '${string}';`, function(err, rows, fields) {
+      if(err){throw err;}
+      res.status(200).send('Success. New Status: denied');
     });
-  });
 } catch(err) {
     res.status(500).send('Server Error:' + err);
     connection.end();
   }
 }
 
-// INSERT INTO myDataBase.pending_ride SET user_ID = 11;
+// INSERT INTO myDataBase.pending_application SET user_ID = 11;
 function push_info (req, res, next) {
   try{
     let number = 0;
     var input = req.query;
-      connection.query(`SELECT COUNT(*) AS num FROM rideshare.ride_info;`, function(err, rows, fields) {
+      connection.query(`SELECT COUNT(*) AS num FROM rideshare.ride;`, function(err, rows, fields) {
         if (err) {throw err;}
         number = rows[0].num;
         number += 1;
 
-        connection.query(`INSERT INTO ride_info SET ride_id = ` + number + `, people_num = ` + input.people_num +`, wechat_id = ` + input.wechat_id + `, note = '` + input.note + `', status = '` + input.status + `', departure = '` + input.departure + `', destination = '` + input.destination + `', num_passenger = ` + input.approved_people + `, date = '` + input.date + `', time = '` + input.time + `', price = ` + input.price + `;`, function(err, rows, fields) {
+        connection.query(`INSERT INTO ride SET ride_id = ` + number + `, people_num = ` + input.people_num +`, wechat_id = ` + input.wechat_id + `, note = '` + input.note + `', status = '` + input.status + `', departure = '` + input.departure + `', destination = '` + input.destination + `', num_passenger = ` + input.approved_people + `, date = '` + input.date + `', time = '` + input.time + `', price = ` + input.price + `;`, function(err, rows, fields) {
           if (err) {console.log(err);}
 
         });
       });
-    // console.log(`INSERT INTO ride_info SET ride_id = ` + input.ride_id + `;`)
+    // console.log(`INSERT INTO application SET ride_id = ` + input.ride_id + `;`)
 
       // if (err) {throw err;}
       console.log("insertion successed");
-      res.status(200).send('ride submitted');
-  //   connection.query(`UPDATE myDataBase.pending_ride SET status = 'pending', numPeople = '` + req.query.numPeople + `' WHERE user_ID = '` + input.user_ID + `';`, function(err, rows, fields) {
+      res.status(200).send('application submitted');
+  //   connection.query(`UPDATE myDataBase.pending_application SET status = 'pending', numPeople = '` + req.query.numPeople + `' WHERE user_ID = '` + input.user_ID + `';`, function(err, rows, fields) {
   //     if (err) {throw err;}
   //       res.status(200).send('Insert successed');
   // });
