@@ -39,7 +39,7 @@ function view_ride (req, res, next) {
 function view_pending (req, res, next) {
   try{
     var input = req.query;
-    connection.query(`SELECT * FROM ride WHERE wechat_id = '${input.wechat_id}';`, function(err, rows, fields) {
+    connection.query(`SELECT * FROM application INNER JOIN ride ON application.ride_id=ride.ride_id WHERE application.applicant_id = '${input.user_ID}';`, function(err, rows, fields) {
       if (err) {throw err;}
       res.status(200).send(rows);
     });
