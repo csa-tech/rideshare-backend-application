@@ -53,7 +53,7 @@ function view_pending (req, res, next) {
 function accept_ride (req, res, next) {
   try{
     var input = req.query;
-    var string = input.user_id;
+    var string = input.application_id;
     connection.query(`UPDATE application SET status='accepted' WHERE application.application_id = '${string}';`, function(err, rows, fields) {
       if(err){throw err;}
       res.status(200).send('Success. New Status: accepted');
@@ -67,7 +67,7 @@ function accept_ride (req, res, next) {
 function deny_ride (req, res, next) {
   try{
     var input = req.query;
-    var string = input.user_id;
+    var string = input.application_id;
     connection.query(`UPDATE application SET status='denied' WHERE application.application_id = '${string}';`, function(err, rows, fields) {
       if(err){throw err;}
       res.status(200).send('Success. New Status: denied');
