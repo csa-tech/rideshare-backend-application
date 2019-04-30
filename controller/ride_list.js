@@ -54,7 +54,7 @@ function accept_ride (req, res, next) {
   try{
     var input = req.query;
     var string = input.user_id;
-    connection.query(`UPDATE application INNER JOIN ride ON application.ride_id=ride.ride_id SET application.status='accepted', ride.status='accepted' WHERE application.application_id = '${string}';`, function(err, rows, fields) {
+    connection.query(`UPDATE application SET status='accepted' WHERE application.application_id = '${string}';`, function(err, rows, fields) {
       if(err){throw err;}
       res.status(200).send('Success. New Status: accepted');
     });
@@ -68,7 +68,7 @@ function deny_ride (req, res, next) {
   try{
     var input = req.query;
     var string = input.user_id;
-    connection.query(`UPDATE application INNER JOIN ride ON application.ride_id=ride.ride_id SET application.status='denied', ride.status='denied' WHERE application.application_id = '${string}';`, function(err, rows, fields) {
+    connection.query(`UPDATE application SET status='denied' WHERE application.application_id = '${string}';`, function(err, rows, fields) {
       if(err){throw err;}
       res.status(200).send('Success. New Status: denied');
     });
