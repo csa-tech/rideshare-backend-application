@@ -1,8 +1,8 @@
 const mysql = require('mysql');
 var connection = mysql.createConnection({
-  host     : 'mydatabase.c9ukuxyqda4n.us-west-1.rds.amazonaws.com',
-  user     : 'CSAUser',
-  password : 'Csa666!!',
+  host     : process.env.HOST,
+  user     : process.env.USER,
+  password : process.env.PASSWORD,
   port     : '3306',
   database : 'rideshare'
 });
