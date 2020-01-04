@@ -62,7 +62,7 @@ function accept_ride (req, res, next) {
   try{
     var input = req.query;
     var string = input.application_id;
-    connection.query("UPDATE application SET status='accepted' WHERE application.application_id = ?;",
+    connection.query("UPDATE application SET status='ACCEPTED' WHERE application.application_id = ?;",
     [
       input.application_id
     ],
@@ -80,7 +80,7 @@ function deny_ride (req, res, next) {
   try{
     var input = req.query;
     var string = input.application_id;
-    connection.query("UPDATE application SET status='denied' WHERE application.application_id = ?;",
+    connection.query("UPDATE application SET status='DENIED' WHERE application.application_id = ?;",
     [
       input.application_id
     ],
