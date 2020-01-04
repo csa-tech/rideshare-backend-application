@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var ride_listRouter = require('./routes/ride_list');
+var ride_listRouter = require('./routes/view-my-rides');
 var accept_router = require('./routes/accept-application');
 var deny_router = require('./routes/deny-application');
 var push_router = require('./routes/pushing');
@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/ride_list', ride_listRouter);
+app.use('/view-my-rides', ride_listRouter);
 app.use('/accept-application', accept_router);
 app.use('/deny-application', deny_router);
 app.use('/pushing', push_router);

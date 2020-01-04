@@ -14,25 +14,36 @@ connection.connect(function(err) {
   console.log('Connected to database.');
 });
 
+
 function view_ride (req, res, next) {
   try{
     var input = req.query;
-    if (req.query.user_ID === "all"){
-      connection.query(`SELECT * FROM application INNER JOIN ride ON application.ride_id=ride.ride_id;`, function(err, rows, fields) {
-        if (err) {throw err;}
-        res.status(200).send(rows);
-      });
-    }
-    else{
-      connection.query("SELECT * FROM application INNER JOIN ride ON application.ride_id=ride.ride_id WHERE application.ride_id = ?;",
+    connection.query("SELECT * FROM application WHERE application.passenger_id = ?;",
+    [
+      input.user_id
+    ],
+    function(err, rows, fields) {
+      if (err) {throw err;}
+      connection.query("SELECT * FROM ride WHERE ride.driver_id = ?;",
       [
-        input.user_ID
+        input.user_id
       ],
-      function(err, rows, fields) {
+      function(err, rows2, fields) {
         if (err) {throw err;}
-        res.status(200).send(rows);
+        var obj = {
+          "result":{
+            "application":{},
+            "ride":{}
+          }
+        };
+        obj.result.application = rows;
+        obj.result.ride = rows2;
+        obj = JSON.parse(JSON.stringify(obj));
+        console.log(obj);
+        res.status(200).send(obj);
       });
-    }
+    });
+
   } catch(err) {
     res.status(500).send('Server Error:' + err);
     connection.end();
