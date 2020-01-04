@@ -30,16 +30,12 @@ function view_ride (req, res, next) {
       ],
       function(err, rows2, fields) {
         if (err) {throw err;}
+        rows = rows.concat(rows2);
         var obj = {
-          "result":{
-              "application":{},
-              "ride":{}
-          }
+          "result":{}
         };
-        obj.result.application = rows;
-        obj.result.ride = rows2;
-        obj = JSON.parse(JSON.stringify(obj));
-        console.log(obj);
+        obj.result = rows;
+        console.log(JSON.parse(JSON.stringify(obj)));
         res.status(200).send(obj);
       });
     });
@@ -66,16 +62,12 @@ function view_pending (req, res, next) {
       ],
       function(err, rows2, fields) {
         if (err) {throw err;}
+        rows = rows.concat(rows2);
         var obj = {
-          "result":{
-              "application":{},
-              "ride":{}
-          }
+          "result":{}
         };
-        obj.result.application = rows;
-        obj.result.ride = rows2;
-        obj = JSON.parse(JSON.stringify(obj));
-        console.log(obj);
+        obj.result = rows;
+        console.log(JSON.parse(JSON.stringify(obj)));
         res.status(200).send(obj);
       });
     });
@@ -91,9 +83,10 @@ function accept_ride (req, res, next) {
   try{
     var input = req.query;
     var string = input.application_id;
-    connection.query("UPDATE application SET status='ACCEPTED' WHERE application.application_id = ?;",
+    connection.query("UPDATE application SET status='ACCEPTED' WHERE application.application_id = ? AND application.passenger_id =?;",
     [
-      input.application_id
+      input.application_id,
+      input.user_id
     ],
       function(err, rows, fields) {
       if(err){throw err;}
@@ -109,9 +102,10 @@ function deny_ride (req, res, next) {
   try{
     var input = req.query;
     var string = input.application_id;
-    connection.query("UPDATE application SET status='DENIED' WHERE application.application_id = ?;",
+    connection.query("UPDATE application SET status='DENIED' WHERE application.application_id = ? AND application.passenger_id =?;",
     [
-      input.application_id
+      input.application_id,
+      input.user_id
     ],
       function(err, rows, fields) {
       if(err){throw err;}
