@@ -32,8 +32,8 @@ function view_ride (req, res, next) {
         if (err) {throw err;}
         var obj = {
           "result":{
-            "application":{},
-            "ride":{}
+              "application":{},
+              "ride":{}
           }
         };
         obj.result.application = rows;
