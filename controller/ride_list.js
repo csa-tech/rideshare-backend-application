@@ -54,14 +54,32 @@ function view_ride (req, res, next) {
 function view_pending (req, res, next) {
   try{
     var input = req.query;
-    connection.query("SELECT * FROM application INNER JOIN ride ON application.ride_id=ride.ride_id WHERE application.applicant_id = ?;",
+    connection.query("SELECT * FROM application WHERE status='PENDING' AND application.passenger_id = ?;",
     [
-      input.user_ID
+      input.user_id
     ],
-      function(err, rows, fields) {
+    function(err, rows, fields) {
       if (err) {throw err;}
-      res.status(200).send(rows);
+      connection.query("SELECT * FROM ride WHERE status='OPEN' AND ride.driver_id = ?;",
+      [
+        input.user_id
+      ],
+      function(err, rows2, fields) {
+        if (err) {throw err;}
+        var obj = {
+          "result":{
+              "application":{},
+              "ride":{}
+          }
+        };
+        obj.result.application = rows;
+        obj.result.ride = rows2;
+        obj = JSON.parse(JSON.stringify(obj));
+        console.log(obj);
+        res.status(200).send(obj);
+      });
     });
+
   } catch(err) {
     res.status(500).send('Server Error:' + err);
     connection.end();

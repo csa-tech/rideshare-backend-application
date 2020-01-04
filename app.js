@@ -10,7 +10,7 @@ var ride_listRouter = require('./routes/view-my-rides');
 var accept_router = require('./routes/accept-application');
 var deny_router = require('./routes/deny-application');
 var push_router = require('./routes/pushing');
-var listing_router = require('./routes/listing');
+var listing_router = require('./routes/view-my-pending-applications');
 
 var app = express();
 
@@ -30,7 +30,7 @@ app.use('/view-my-rides', ride_listRouter);
 app.use('/accept-application', accept_router);
 app.use('/deny-application', deny_router);
 app.use('/pushing', push_router);
-app.use('/listing', listing_router);
+app.use('/view-my-pending-applications', listing_router);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
