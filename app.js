@@ -8,7 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var ride_listRouter = require('./routes/ride_list');
 var accept_router = require('./routes/accept-application');
-var deny_router = require('./routes/ride_deny');
+var deny_router = require('./routes/deny-application');
 var push_router = require('./routes/pushing');
 var listing_router = require('./routes/listing');
 
@@ -28,7 +28,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/ride_list', ride_listRouter);
 app.use('/accept-application', accept_router);
-app.use('/ride_deny', deny_router);
+app.use('/deny-application', deny_router);
 app.use('/pushing', push_router);
 app.use('/listing', listing_router);
 // catch 404 and forward to error handler
