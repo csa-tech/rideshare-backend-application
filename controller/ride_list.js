@@ -17,28 +17,9 @@ connection.connect(function(err) {
 
 function view_ride (req, res, next) {
   try{
-    var input = req.query;
-    connection.query("SELECT * FROM application WHERE application.passenger_id = ?;",
-    [
-      input.user_id
-    ],
-    function(err, rows, fields) {
-      if (err) {throw err;}
-      connection.query("SELECT * FROM ride WHERE ride.driver_id = ?;",
-      [
-        input.user_id
-      ],
-      function(err, rows2, fields) {
-        if (err) {throw err;}
-        rows = rows.concat(rows2);
-        var obj = {
-          "result":{}
-        };
-        obj.result = rows;
-        console.log(JSON.parse(JSON.stringify(obj)));
-        res.status(200).send(obj);
-      });
-    });
+      var input = req.query;
+      var obj = input.input;
+      res.status(200).send(obj);
 
   } catch(err) {
     res.status(500).send('Server Error:' + err);
