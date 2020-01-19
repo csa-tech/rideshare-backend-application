@@ -18,7 +18,7 @@ connection.connect(function(err) {
 function view_ride (req, res, next) {
   try{
       var input = req.query;
-      var obj = input.input;
+      var obj = input.user_id;
       res.status(200).send(obj);
 
   } catch(err) {
